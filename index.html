@@ -6,115 +6,102 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <title>Train Scheduler</title>
+    <!-- Added a link to Bootstrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
-
-    <!-- Custom Style sheet -->
-    <link type="text/css" href="assets/css/style.css">
-    <title>Train Scheduler</title>
-
+    <!-- Added link to the jQuery Library -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
     <!-- Firebase Link -->
     <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
-    <title>Hello, world!</title>
+
+    <!-- Added a link to Css file-->
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+
+
+    <!-- Added Moment JS -->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+
+
 </head>
 
+
 <body>
-    <!DOCTYPE html>
-    <html lang="en-us">
 
-    <head>
+    <div class="container">
 
-        <meta charset="UTF-8">
-        <title>Sign-Up Today!</title>
+        <br>
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <!-- Jumbotron -->
+        <div class="jumbotron" id="jumid">
+            <h1 class="text-center">Anytime is Train time !</h1>
+        </div>
 
-    </head>
+        <div class="row">
 
-    <body>
+            <!-- Sign-Up Card-->
+            <div class="col-lg-12">
+                <div class="card card-default">
+                    <div class="card-heading">
+                        <h3 class="card-title">Add Train </h3>
+                    </div>
+                    <div class="card-body">
 
-        <div class="container">
-
-            <br>
-
-            <!-- Jumbotron -->
-            <div class="jumbotron">
-                <h1 class="text-center">Anytime is Train time !</h1>
-            </div>
-
-            <div class="row">
-
-                <!-- Sign-Up Card-->
-                <div class="col-lg-12">
-                    <div class="card card-default">
-                        <div class="card-heading">
-                            <h3 class="card-title">Add Train </h3>
-                        </div>
-                        <div class="card-body">
-
-                            <!-- Sign-up Form (note the various input "types")-->
-                            <form role="form">
-                                <div class="form-group row">
-                                    <label for="name-input"> Train Name:</label>
-                                    <input class="form-control" id="name-input" type="text">
-                                </div>
-                                <div class="form-group row">
-                                    <label for="role-input">Destination:</label>
-                                    <input class="form-control" id="destination-input" type="text">
-                                </div>
-                                <div class="form-group row">
-                                    <label for="start-date">First Train Time(HH:mm-militry time)</label>
-                                    <input class="form-control" id="firsttraintime" type="time">
-                                </div>
-                                <div class="form-group row">
-                                    <label for="monthly-rate">Frequency (mins)</label>
-                                    <input class="form-control" id="frequencymins" type="number"></input>
-                                </div>
-                                <button class="btn btn-default" id="submit" type="submit">Submit</button>
-                            </form>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card-heading">
-                                    <h3 class="card-title">Current Train Schedule</h3>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr id="table-row">
-                                            <th scope="row"> Train Name</th>
-                                            <th scope="col">Destination</th>
-                                            <th scope="col">Frequency (mins)</th>
-                                            <th scope="col">Next Arrival</th>
-                                            <th scope="col">Minutes Away</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
+                        <!-- Sign-up Form (note the various input "types")-->
+                        <form role="form">
+                            <div class="form-group row">
+                                <label for="name-input"> Train Name:</label>
+                                <input class="form-control" id="name-input" type="text">
                             </div>
+                            <div class="form-group row">
+                                <label for="role-input">Destination:</label>
+                                <input class="form-control" id="destination-input" type="text">
+                            </div>
+                            <div class="form-group row">
+                                <label for="start-date">First Train Time(HH:mm-militry time)</label>
+                                <input class="form-control" id="firsttraintime" type="time">
+                            </div>
+                            <div class="form-group row">
+                                <label for="monthly-rate">Frequency (mins)</label>
+                                <input class="form-control" id="frequencymins" type="number"></input>
+                            </div>
+                            <button class="btn btn-default" id="submit" type="submit">Submit</button>
+                        </form>
 
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card-heading">
+                                <h3 class="card-title">Current Train Schedule</h3>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr id="table-row">
+                                        <th scope="row"> Train Name</th>
+                                        <th scope="col">Destination</th>
+                                        <th scope="col">Frequency (mins)</th>
+                                        <th scope="col">Next Arrival</th>
+                                        <th scope="col">Minutes Away</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody1">
+
+                                </tbody>
+                            </table>
                         </div>
-
-
 
                     </div>
 
+
+
                 </div>
 
+            </div>
+            <script type="text/javascript" src="./assets/javascript/app.js"></script>
+</body>
 
-
-                <!-- Optional JavaScript -->
-                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-                    crossorigin="anonymous"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-                    crossorigin="anonymous"></script>
-                <script src="assets/javascript/app.js"></script>
-    </body>
-
-    </html>
+</html>

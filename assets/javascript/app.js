@@ -8,57 +8,102 @@
         storageBucket: "",
         messagingSenderId: "606625011936"
     };
+
     firebase.initializeApp(config);
     // Variables
     // ================================================================================
     // Get a reference to the database service
     var database = firebase.database();
 
-    $(document).ready(function () {
 
-        $("#submit").on("click", function (event) {
-            event.preventDefault();
+    // $(document).ready(function () {
 
-            name = $("#name-input").val().trim();
-            destination = $("#destination-input").val().trim();
-            firsttime = $("#firsttraintime").val().trim();
-            frequency = $("#frequencymins").val().trim();
+    // 2. Button for enter iformation about train
+    $("#submit").on("click", function (event) {
+        event.preventDefault();
+        name = $("#name-input").val().trim();
+        destination = $("#destination-input").val().trim();
+        firsttime = $("#firsttraintime").val().trim();
+        frequency = $("#frequencymins").val().trim();
 
-            database.ref().push({
-                name: name,
-                destination: destination,
-                firsttime: firsttime,
-                frequency: frequency,
-                dateAdded: firebase.database.ServerValue.TIMESTAMP,
-            });
+        // Creates local "temporary" object for holding employee data
+        var train = {
+            name: name,
+            destination: destination,
+            firsttime: firsttime,
+            frequency: frequency
+        }
 
-        });
+        // Uploads employee data to the database
+        database.ref().push(train);
 
-        database.ref().on("child_added", function (childSnapshot) {
-
-            console.log(childSnapshot.val());
-            console.log(childSnapshot.val().name);
-            console.log(childSnapshot.val().destination);
-            console.log(childSnapshot.val().firsttime);
-            console.log(childSnapshot.val().frequency);
-            console.log(childSnapshot.val().dateAdded);
-
+        // Logs everything to console
+        console.log(train.name);
+        console.log(train.destination);
+        console.log(train.firsttime);
+        console.log(train.frequency);
 
 
-
-            //let startDate = changeDateToSec(childSnapshot.val().date);
-            //let currDate = new Date(childSnapshot.val().dateAdded);
-
-            // let monthsLapsed = monthDiff(startDate, currDate);
-            // console.log(monthsLapsed);
-            let row = $("<tr>");
-            row.append(`<td>${childSnapshot.val().name}`);
-            row.append(`<td>${childSnapshot.val().destination}`);
-            row.append(`<td>${childSnapshot.val().firsttime}`);
-            row.append(`<td>${childSnapshot.val().frequency}`);
-
-            $("tbody").append(row);
-        }, function (errorObject) {
-            console.log("Errors handled: " + errorObject.code);
-        });
     });
+
+    // Create Firebase event for adding entered data to the database and a row in the html when a user adds an entry
+    database.ref().on("child_added", function (childSnapshot) {
+
+        console.log(childSnapshot.val());
+        // Store everything into a variable.
+        var trainname = childSnapshot.val().name;
+        var traindestination = childSnapshot.val().destination;
+        var trainfirsttime = childSnapshot.val().firsttime;
+        var trainfrequency = childSnapshot.val().frequency;
+
+        // Train Info
+        console.log(trainname);
+        console.log(traindestination);
+        console.log(trainfirsttime);
+        console.log(trainfrequency);
+        console.log(childSnapshot.val().dateAdded);
+
+        // Calculate the months worked using hardcore math
+
+        let firstTimeConverted = moment(trainfirsttime, "HH:mm").subtract(1, "years");
+        console.log("firstTimeConverted:", firstTimeConverted);
+        let currentTime = moment();
+        console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
+        let diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+        console.log("DIFFERENCE IN TIME: " + diffTime);
+        let tRemainder = diffTime % trainfrequency;
+        console.log(tRemainder);
+        let tminutestilltrain = trainfrequency - tRemainder;
+        console.log("MINUTES TILL TRAIN: " + tminutestilltrain);
+        let nexttrain = moment().add(tminutestilltrain, "minutes").format("HH:mm");
+        console.log("ARRIVAL TIME: " + moment(nexttrain).format("HH:mm"));
+
+
+
+
+        // Create the new row
+        var newRow = $("<tr>").append(
+            $("<td>").text(trainname),
+            $("<td>").text(traindestination),
+            $("<td>").text(trainfrequency),
+            $("<td>").text(nexttrain),
+            $("<td>").text(tminutestilltrain),
+
+        );
+
+        // Append the new row to the table
+        $("#tbody1").append(newRow);
+
+        // Create the new row
+        //  let row = $("<tr>");
+        // row.append(`<td>${trainname}`);
+        //  row.append(`<td>${traindestination}`);
+        //  row.append(`<td>${trainfrequency}`);
+        //  row.append(`<td>${nexttrain}`);
+        // row.append(`<td>${tminutestilltrain}`);
+
+        //  $("tbody").append(row);
+    }, function (errorObject) {
+        console.log("Errors handled: " + errorObject.code);
+    });
+    // });
